@@ -34,17 +34,29 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
-
+## cacheSolve() returns the inverse of a matrix stored in an object created 
+## using makeCacheMatrix(). The first time cacheSolve() is called for a 
+## particular matrix, it calculates the inverse and stores the inverse in the 
+## special object. Subsequent calls of cacheSolve() for the same matrix just
+## returns the stored inverse matrix.
+## 
 cacheSolve <- function(x, ...) {
-    ## Return a matrix that is the inverse of 'x'
+    ## Get the inverse matrix currently stored in the object
     m <- x$getinverse()
+    
+    ## If we got something besides the NULL object, just return that - it is 
+    ## the inverse matrix previously cached
     if(!is.null(m)) {
         message("getting cached data")
         return(m)
     }
+    
+    ## No inverse was cached, so get the matrix...
     data <- x$get()
+    ## ... and calculate the inverse...
     m <- solve(data, ...)
+    ## ... and store the inverse back in the object...
     x$setinverse(m)
+    ## and return the inverse.
     m
 }
